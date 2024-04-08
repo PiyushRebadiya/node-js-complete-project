@@ -7,9 +7,7 @@ node_modules/
 # Ignore log files
 *.log
 
-# Ignore compiled JavaScript files
-*.js
-*.js.map
+
 
 # Ignore Visual Studio Code specific files
 .vscode/
