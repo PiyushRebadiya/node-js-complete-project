@@ -1,12 +1,30 @@
-// Import required modules
 const express = require('express');
+const sql = require('mssql');
+const bodyParser = require('body-parser');
+const routes = require('./Routes/routes.js');
+const { connectToDatabase } = require('./sql/connectToDatabase.js');
 
-// Create an Express app
 const app = express();
 
-// Define a route
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+app.use(bodyParser.json());
+
+
+
+// Connect to the database
+connectToDatabase()
+  .then(() => {
+
+    console.log('Connected to the database successfully');
+  })
+  .catch(error => {
+    console.error('Error connecting to the database:', error);
+  });
+
+app.use("/", routes);
+
+
+app.get('/', async (req, res) => {
+  res.send('Hello World!');
 });
 
 // Start the server
