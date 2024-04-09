@@ -15,6 +15,8 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(cors());
 
+app.use('/images',express.static('./images'))
+
 
 // Connect to the database
 connectToDatabase()
