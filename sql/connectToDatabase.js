@@ -12,7 +12,30 @@ const config = {
     }
 };
 
-const pool = new sql.ConnectionPool(config);
+// Create a function to initialize the pool
+function initializePool(config) {
+    return new sql.ConnectionPool(config);
+}
+
+// Initialize the pool with the initial configuration
+let pool = initializePool(config);
+
+async function changeDatabase(newDatabase) {
+    try {
+        const updatedConfig = {
+            ...config,
+            database: newDatabase
+        };
+
+        const newPool = initializePool(updatedConfig);
+        await newPool.connect();
+        return newPool;
+    } catch (error) {
+        console.error('Error changing database:', error);
+        throw error; // Rethrow the error to handle it in the calling code
+    }
+}
+
 
 // Function to connect to the database
 async function connectToDatabase() {
@@ -38,4 +61,4 @@ async function closeDatabaseConnection() {
     }
 }
 
-module.exports = { sql, pool, connectToDatabase, closeDatabaseConnection };
+module.exports = { sql, pool, connectToDatabase, closeDatabaseConnection, changeDatabase };

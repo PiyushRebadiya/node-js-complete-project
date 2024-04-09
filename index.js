@@ -1,13 +1,19 @@
 const express = require('express');
 const sql = require('mssql');
 const bodyParser = require('body-parser');
+const dotenv = require("dotenv");
 const routes = require('./Routes/routes.js');
+const cookieParser = require('cookie-parser');
+const cors = require("cors");
 const { connectToDatabase } = require('./sql/connectToDatabase.js');
 
 const app = express();
 
 app.use(bodyParser.json());
-
+dotenv.config();
+app.use(express.json())
+app.use(cookieParser());
+app.use(cors());
 
 
 // Connect to the database
