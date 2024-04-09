@@ -1,6 +1,17 @@
-const { pool, sql } = require('../sql/connectToDatabase');
+const { pool, sql, changeDatabase } = require('../sql/connectToDatabase');
 
-// Define a route to retrieve user list
+const fetchPrivateUserList = async (req, res) => {
+    try {
+        const decodedData = req.user;
+        const newPool = await changeDatabase(decodedData.custid);
+        const result = await newPool.request().query('SELECT * FROM tblemp');
+        res.json(result.recordset);
+    } catch (error) {
+        console.log("error", error);
+        res.status(500).send('Internal Server Error');
+    }
+
+};
 const fetchUserList = async (req, res) => {
     try {
         // Query the database
@@ -92,6 +103,7 @@ const updateUserListById = async (req, res) => {
 }
 
 module.exports = {
+    fetchPrivateUserList,
     fetchUserList,
     addUserList,
     removeUserListById,
