@@ -3,9 +3,12 @@ const { pool, sql, changeDatabase } = require('../sql/connectToDatabase');
 const fetchPrivateUserList = async (req, res) => {
     try {
         const decodedData = req.user;
-        const newPool = await changeDatabase(decodedData.custid);
-        const result = await newPool.request().query('SELECT * FROM tblemp');
-        res.json(result.recordset);
+        console.log('decodedData :>> ', decodedData);
+        // const newPool = await changeDatabase(decodedData.custid);
+        // const result = await newPool.request().query('SELECT * FROM tblemp');
+        res.json({
+            data: decodedData
+        });
     } catch (error) {
         console.log("error", error);
         res.status(500).send('Internal Server Error');
