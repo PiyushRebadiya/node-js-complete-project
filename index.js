@@ -1,5 +1,6 @@
 const express = require('express');
-const sql = require('mssql');
+// const sql = require('mssql');
+const sql = require('mssql/msnodesqlv8')
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -7,15 +8,24 @@ const app = express();
 app.use(bodyParser.json());
 
 // Configuration for the connection
+// const config = {
+//   user: 'sa',
+//   password: 'monarch@1',
+//   server: '154.61.80.42',
+//   database: 'testing',
+//   options: {
+//     encrypt: false,
+//     trustServerCertificate: true,
+//   }
+// };
+
 const config = {
-  user: 'sa',
-  password: 'monarch@1',
-  server: '154.61.80.42',
-  database: 'testing',
-  options: {
-    encrypt: false,
-    trustServerCertificate: true,
-  }
+    server: 'DESKTOP-7D71JMJ\\SQLEXPRESS',
+    database: 'db',
+    options: {
+      trustedConnection: true, // Trust the self-signed certificate
+      encrypt: false, // Enable SSL encryption
+    }
 };
 
 // Create a connection pool
@@ -32,7 +42,7 @@ pool.connect().then(() => {
 app.get('/userlist', async (req, res) => {
   try {
     // Query the database
-    const result = await pool.request().query('SELECT * FROM users');
+    const result = await pool.request().query('SELECT * FROM Persons');
     // Send the query result as JSON response
     res.json(result.recordset);
   } catch (error) {
